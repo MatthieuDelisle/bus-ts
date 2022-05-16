@@ -55,7 +55,7 @@ const SidePanelContainer = () => {
         case ConfigurationState.DISPLAY:
             return <Display busLines={busLines} onEditLine={onEditLine} onDeleteLine={onDeleteLine}/>
         case ConfigurationState.EDITING:
-            return <LineEditor busLine={editingLine!} onSaveLine={onSaveLine} />
+            return <LineEditor busLine={editingLine!} onSaveLine={onSaveLine}/>
     }
 }
 export default SidePanelContainer

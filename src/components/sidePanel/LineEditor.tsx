@@ -1,7 +1,9 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Card from 'react-bootstrap/Card';
 import BusLine from "../../utils/models/BusLine";
-import {FormEvent, useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
+import {LatLngExpression} from "leaflet";
 
 const LineEditor = ({busLine, onSaveLine}: {busLine: BusLine, onSaveLine: (busLine: BusLine) => void}) => {
 
@@ -11,6 +13,14 @@ const LineEditor = ({busLine, onSaveLine}: {busLine: BusLine, onSaveLine: (busLi
         event.preventDefault();
         onSaveLine(editedBusLine)
     }
+
+    const onMapClicked = (pos: LatLngExpression) => {
+        console.log("[LineEditor] " + pos)
+    }
+
+    useEffect(() => {
+        console.log("setMapClickListener");
+    });
 
     return (
         <Form onSubmit={onSave}>
@@ -24,6 +34,13 @@ const LineEditor = ({busLine, onSaveLine}: {busLine: BusLine, onSaveLine: (busLi
                     setEditedBusLine({ ...editedBusLine, name: e.target.value });
                     }} />
             </Form.Group>
+
+            <Card>
+                <Card.Body>Starting point</Card.Body>
+                <Card.Text>
+                    {busLine.startingPoint === undefined?"You can click on the map to select a starting point":busLine.name}
+                </Card.Text>
+            </Card>
 
             <Button variant="primary" type="submit">
                 Submit

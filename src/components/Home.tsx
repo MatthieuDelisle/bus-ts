@@ -3,6 +3,8 @@ import Col from 'react-bootstrap/Col';
 import React from "react";
 import SidePanelContainer from "./sidePanel/SidePanelContainer";
 import MapWrapper from "./map/MapWrapper";
+import Container from 'react-bootstrap/Container';
+import {LatLngExpression} from "leaflet";
 
 const rowStyle: React.CSSProperties = {
     marginRight: 0,
@@ -15,16 +17,24 @@ const colStyle: React.CSSProperties = {
     paddingRight: 0
 }
 
+// The map will be center on this position when started
 const center = {lat: 47.64795, lng: 6.85469};
 
 const Home = () => {
+
+    const onMapClicked = (pos: LatLngExpression) => {
+        console.log("[Home] onMapClicked " + pos)
+    }
+
     return (
         <Row style={rowStyle}>
             <Col style={colStyle} sm={8}>
-                <MapWrapper zoom={16} center={center}/>
+                <MapWrapper zoom={16} center={center} onMapClicked={onMapClicked}/>
             </Col>
             <Col style={colStyle} sm>
-                <SidePanelContainer/>
+                <Container>
+                    <SidePanelContainer/>
+                </Container>
             </Col>
         </Row>
     )
