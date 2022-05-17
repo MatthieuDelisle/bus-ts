@@ -1,12 +1,21 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {MapContainer, TileLayer, useMapEvents} from "react-leaflet";
 import {LatLngExpression} from "leaflet";
-import Markers from "../../utils/leaflet/Markers";
+import Markers, {IMarker} from "../../utils/leaflet/Markers";
 import GetPosition from "../../utils/leaflet/GetPosition";
+import MapManager from "../../utils/manager/MapManager";
 
 const MapWrapper = (
-    {center, zoom, onMapClicked} :
-        {center: LatLngExpression, zoom: number, onMapClicked: (pos: LatLngExpression) => void}) => {
+    {center, zoom, mapManager} :
+        {center: LatLngExpression, zoom: number, mapManager: MapManager}) => {
+
+    const [markers, setMarkers] = useState<IMarker[]>([])
+
+    useEffect(() => {
+        mapManager.markers.addObserver((d: IMarker[]) => {
+            setMarkers(d);
+        });
+    }, [mapManager])
 
     return (
         <MapContainer
@@ -17,8 +26,8 @@ const MapWrapper = (
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution="&copy; <a href=&quot;https://www.openstreetmap.org/copyright&quot;>OpenStreetMap</a> contributors" />
 
-            <Markers markers={[{pos: [47.6480217, 6.8575558], color: "fe4848"}]}/>
-            <GetPosition onMapClicked={onMapClicked}/>
+            <Markers markers={markers}/>
+            <GetPosition onMapClicked={(d: LatLngExpression) => {mapManager.posClick.data = d; }}/>
         </MapContainer>
     )
 }

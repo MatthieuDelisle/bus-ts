@@ -4,7 +4,8 @@ import React from "react";
 import SidePanelContainer from "./sidePanel/SidePanelContainer";
 import MapWrapper from "./map/MapWrapper";
 import Container from 'react-bootstrap/Container';
-import {LatLngExpression} from "leaflet";
+import MapManager from "../utils/manager/MapManager";
+
 
 const rowStyle: React.CSSProperties = {
     marginRight: 0,
@@ -22,18 +23,16 @@ const center = {lat: 47.64795, lng: 6.85469};
 
 const Home = () => {
 
-    const onMapClicked = (pos: LatLngExpression) => {
-        console.log("[Home] onMapClicked " + pos)
-    }
+    const mapManager = new MapManager();
 
     return (
         <Row style={rowStyle}>
             <Col style={colStyle} sm={8}>
-                <MapWrapper zoom={16} center={center} onMapClicked={onMapClicked}/>
+                <MapWrapper zoom={16} center={center} mapManager={mapManager}/>
             </Col>
             <Col style={colStyle} sm>
                 <Container>
-                    <SidePanelContainer/>
+                    <SidePanelContainer mapManager={mapManager}/>
                 </Container>
             </Col>
         </Row>

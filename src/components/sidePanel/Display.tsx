@@ -9,7 +9,7 @@ const Display = ({busLines, onEditLine, onDeleteLine} : {busLines: BusLine[], on
     return <>
         <Stack gap={3}>
             {busLines.map((line: BusLine, i: number) => {
-                return <Row>
+                return <Row key={i}>
                     <Col sm={8}>{line.name}</Col>
                     <Col sm>
                         <Button className={'m-2'} variant="primary" onClick={() => onEditLine(line)}>Edit</Button>

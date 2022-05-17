@@ -3,8 +3,10 @@ import BusLine from "../../utils/models/BusLine";
 import ConfigurationState from "../../utils/enums/ConfigurationState";
 import Display from "./Display";
 import LineEditor from "./LineEditor";
+import MapClickEvent from "../../utils/observer/MapClickEvent";
+import MapManager from "../../utils/manager/MapManager";
 
-const SidePanelContainer = () => {
+const SidePanelContainer = ({mapManager}: {mapManager: MapManager}) => {
 
     const [state, setState] = useState<ConfigurationState>(ConfigurationState.DISPLAY);
     const [editingLine, setEditingLine] = useState<BusLine | undefined>(undefined);
@@ -55,7 +57,7 @@ const SidePanelContainer = () => {
         case ConfigurationState.DISPLAY:
             return <Display busLines={busLines} onEditLine={onEditLine} onDeleteLine={onDeleteLine}/>
         case ConfigurationState.EDITING:
-            return <LineEditor busLine={editingLine!} onSaveLine={onSaveLine}/>
+            return <LineEditor busLine={editingLine!} onSaveLine={onSaveLine} mapManager={mapManager}/>
     }
 }
 export default SidePanelContainer

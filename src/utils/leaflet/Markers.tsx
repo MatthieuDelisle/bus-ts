@@ -7,7 +7,7 @@ export interface IMarker {
     color: string
 }
 
-function Markers({ markers }: {markers: [IMarker]}): JSX.Element {
+function Markers({ markers }: {markers: IMarker[]}): JSX.Element {
 
     return <>{markers.map((marker, index) => {
         return <Marker
