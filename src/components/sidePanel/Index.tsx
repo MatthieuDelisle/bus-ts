@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import BusLine from "../../utils/models/BusLine";
 import {useAppSelector, useAppDispatch} from "../../store/hooks";
 import {selectDisplay, toggleLayerVisibility} from "../../store/features/display/displaySlice";
-import ILayer from "../../store/features/display/ILayer";
+import ILayer from "../../utils/interface/ILayer";
 
 const Index = ({onEditLine} : {onEditLine:(busLine: BusLine) => void}) => {
 
@@ -25,7 +25,7 @@ const Index = ({onEditLine} : {onEditLine:(busLine: BusLine) => void}) => {
                 })
             }
         </Stack>
-        <Button variant="primary" onClick={() => {onEditLine(new BusLine()); }}>
+        <Button variant="primary" onClick={() => { onEditLine(new BusLine()); }}>
             Create new Line
         </Button>
     </>

@@ -3,8 +3,7 @@ import BusLine from "../../utils/models/BusLine";
 import ConfigurationState from "../../utils/enums/ConfigurationState";
 import Index from "./Index";
 import LineEditor from "./LineEditor";
-import MapClickEvent from "../../utils/observer/MapClickEvent";
-import MapManager from "../../utils/manager/MapManager";
+
 
 const SidePanelContainer = () => {
 
@@ -17,7 +16,10 @@ const SidePanelContainer = () => {
         setState(ConfigurationState.EDITING);
     }
 
-    const onSaveLine = () => {
+    const onSaveLine = (busLine: BusLine) => {
+
+        //
+
         setState(ConfigurationState.DISPLAY);
     }
 

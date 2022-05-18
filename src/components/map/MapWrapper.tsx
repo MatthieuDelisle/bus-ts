@@ -1,12 +1,15 @@
 import React, {useEffect, useState} from "react";
-import {MapContainer, TileLayer} from "react-leaflet";
+import {MapContainer, TileLayer, Polyline} from "react-leaflet";
 import {LatLngExpression} from "leaflet";
-import Markers, {IMarker} from "../../utils/leaflet/Markers";
+import Markers from "../../utils/leaflet/Markers";
+import {IMarker} from "../../utils/interface/IMarker";
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { selectDisplay } from '../../store/features/display/displaySlice'
 import GetPosition from "../../utils/leaflet/GetPosition";
 import {setPosition} from "../../store/features/position/positionSlice";
 
+
+const limeOptions = { color: 'lime' }
 
 const MapWrapper = (
     {center, zoom} :
@@ -28,7 +31,7 @@ const MapWrapper = (
         }
 
         setMarkers(n_markers);
-    }, [display])
+    }, [display]);
 
 
     return (
@@ -45,6 +48,9 @@ const MapWrapper = (
                 // We cannot send non-serializable variable in the store.
                 dispatch(setPosition({...d}));
             }}/>}
+
+
+            <Polyline pathOptions={limeOptions} positions={[{lat: 47.648018138332795, lng: 6.85753918299505}, {lat: 47.647338717245, lng: 6.857834197267501}, {lat: 47.64664483126738, lng: 6.858145303227535}, {lat: 47.64547026368291, lng: 6.858778242939298}]} />
         </MapContainer>
     )
 }

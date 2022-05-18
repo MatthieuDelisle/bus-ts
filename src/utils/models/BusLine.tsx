@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import {LatLngExpression} from "leaflet";
-import {IMarker} from "../leaflet/Markers";
+import {IMarker} from "../interface/IMarker";
 
 class BusLine {
     uuid: string = uuidv4();

@@ -1,4 +1,4 @@
-import {IMarker} from "../../../utils/leaflet/Markers";
+import {IMarker} from "./IMarker";
 import {Polyline} from "leaflet";
 
 interface ILayer {

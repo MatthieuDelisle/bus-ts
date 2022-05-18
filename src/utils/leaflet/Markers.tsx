@@ -1,11 +1,7 @@
 import { Marker } from 'react-leaflet';
 import markerIcon from "./MarkerIcon";
-import {LatLngExpression} from "leaflet";
+import {IMarker} from "../interface/IMarker";
 
-export interface IMarker {
-    pos: LatLngExpression,
-    color: string
-}
 
 function Markers({ markers }: {markers: IMarker[]}): JSX.Element {
 

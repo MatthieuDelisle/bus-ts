@@ -4,7 +4,6 @@ import React from "react";
 import SidePanelContainer from "./sidePanel/SidePanelContainer";
 import MapWrapper from "./map/MapWrapper";
 import Container from 'react-bootstrap/Container';
-import MapManager from "../utils/manager/MapManager";
 
 
 const rowStyle: React.CSSProperties = {

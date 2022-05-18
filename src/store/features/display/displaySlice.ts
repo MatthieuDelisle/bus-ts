@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
-import IDisplay from "./IDisplay";
-import ILayer from "./ILayer";
+import IDisplay from "../../../utils/interface/IDisplay";
+import ILayer from "../../../utils/interface/ILayer";
 
 export interface DisplayState {
   value: IDisplay;

@@ -24,6 +24,10 @@ const LineEditor = (
 
     useEffect(() => {
         console.log("[LineEditor] ");
+
+        console.log(position);
+
+
     }, [position]);
 
 
