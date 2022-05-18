@@ -1,32 +1,60 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
-import BusLine from "../../utils/models/BusLine";
 import {FormEvent, useEffect, useState} from "react";
-import {useAppSelector} from "../../store/hooks";
+import {useAppDispatch, useAppSelector} from "../../store/hooks";
 import {selectPosition} from "../../store/features/position/positionSlice";
+import ILayer from "../../utils/interface/ILayer";
+import EditorState from "../../utils/interface/EditorState";
+import {updateLayer} from "../../store/features/display/displaySlice";
 
 const LineEditor = (
-    {busLine, onSaveLine}:
-        {busLine: BusLine, onSaveLine: (busLine: BusLine) => void}) => {
+    {layer, onSaveLine}:
+        {layer: ILayer, onSaveLine: (layer: ILayer) => void}) => {
 
-    const [editedBusLine, setEditedBusLine] = useState(busLine);
+    const dispatch = useAppDispatch();
+
+    const [editedLayer, setLayer] = useState<ILayer>(layer);
+
+    const [state, setState] = useState<EditorState>(EditorState.IDLE)
+
+    const [color, setColor] = useState("#fff");
 
     const position = useAppSelector(selectPosition);
 
     const onSave = (event: FormEvent) => {
         event.preventDefault();
-        onSaveLine(editedBusLine);
 
+        onSaveLine(editedLayer);
         // Clear
 
     }
 
     useEffect(() => {
         console.log("[LineEditor] ");
-
         console.log(position);
 
+        switch (state) {
+            case EditorState.IDLE:
+                // Do nothing
+                break;
+            case EditorState.SELECT_STARTING_POINT:
+                setLayer({...editedLayer, markers: [{pos: position, color: color}]});
+                break;
+            case EditorState.SELECT_PATH:
+                let polylines = {...editedLayer.polylines};
+                if(polylines.length === 0)
+                    polylines = [{positions: [position], color: color}];
+                else {
+                    let busPolyLine = polylines[0];
+                    busPolyLine.positions.push(position);
+                    polylines = [...polylines, busPolyLine];
+                }
+                setLayer({...editedLayer, polylines: polylines})
+                break;
+        
+
+        dispatch(updateLayer(layer));
 
     }, [position]);
 
@@ -38,26 +66,27 @@ const LineEditor = (
                 <Form.Control
                     type="text"
                     placeholder="Enter a name"
-                    value={editedBusLine.name}
+                    value={editedLayer.name}
                     onChange={e => {
-                        setEditedBusLine({ ...editedBusLine, name: e.target.value });
+                        setLayer({ ...editedLayer, name: e.target.value });
                     }} />
                 <Form.Label htmlFor="ColorInput">Select line color</Form.Label>
-                <Form.Control
+                {/*<Form.Control
                     type="color"
                     id="exampleColorInput"
-                    value={editedBusLine.color}
+                    value={editedLayer.color}
                     onChange={e => {
-                        setEditedBusLine({...editedBusLine, color: e.target.value });
+                        setColor(e.target.value);
                     }}
                     title="Choose your color"
-                />
+                />*/}
             </Form.Group>
 
             <Card>
                 <Card.Body>Starting point</Card.Body>
                 <Card.Text>
-                    {busLine.startingPoint === undefined?"You can click on the map to select a starting point":busLine.name}
+                    <Button>Select starting point</Button>
+                    <Button>Select path</Button>
                 </Card.Text>
             </Card>
 

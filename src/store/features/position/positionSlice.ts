@@ -3,11 +3,11 @@ import { RootState } from '../../store';
 import {LatLngExpression} from "leaflet";
 
 export interface PositionState {
-  value: LatLngExpression | undefined;
+  value: LatLngExpression;
 }
 
 const initialState: PositionState = {
-  value: undefined,
+  value: {lat: 0, lng: 0},
 };
 
 export const positionSlice = createSlice({

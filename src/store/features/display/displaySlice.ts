@@ -10,7 +10,13 @@ export interface DisplayState {
 const initialState: DisplayState = {
   value: {
     layers: [
-      {markers: [{pos: {lat: 47.64795, lng: 6.85469}, color: "fff"}], name:"layer_default", displayed: true, polylines: []},
+      {
+        markers: [{pos: {lat: 47.64795, lng: 6.85469}, color: "d51717"}],
+        name:"layer_default",
+        displayed: true,
+        polylines: [],
+        id: "aaa",
+      },
     ]
   },
 };
@@ -31,10 +37,27 @@ export const displaySlice = createSlice({
       copy.layers.push(action.payload);
       state.value = copy;
     },
+    updateLayer: (state,  action: PayloadAction<ILayer>) => {
+      const copy = {...state.value};
+      let index = -1;
+      for(let i = 0;  i < copy.layers.length; i++) {
+        if(copy.layers[i].id === action.payload.id)
+        {
+          index = i;
+          break;
+        }
+      }
+
+      if(index === -1)
+        return console.log("[displaySlice] updateLayer failed");
+
+      copy.layers[index] = action.payload;
+      state.value = copy;
+    },
   },
 });
 
-export const { addLayer, toggleLayerVisibility } = displaySlice.actions;
+export const { toggleLayerVisibility, addLayer, updateLayer } = displaySlice.actions;
 
 export const selectDisplay = (state: RootState) => state.display.value;
 

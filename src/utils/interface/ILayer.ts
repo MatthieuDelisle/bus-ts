@@ -1,11 +1,13 @@
 import {IMarker} from "./IMarker";
-import {Polyline} from "leaflet";
+import IPolyline from "./IPolyline";
+
 
 interface ILayer {
+    id: string;
     displayed: boolean;
     name: string;
     markers: IMarker[];
-    polylines: Polyline[];
+    polylines: IPolyline[];
 }
 
 export default ILayer;

@@ -1,22 +1,22 @@
 import React, {useState} from "react";
-import BusLine from "../../utils/models/BusLine";
 import ConfigurationState from "../../utils/enums/ConfigurationState";
 import Index from "./Index";
 import LineEditor from "./LineEditor";
+import ILayer from "../../utils/interface/ILayer";
 
 
 const SidePanelContainer = () => {
 
     const [state, setState] = useState<ConfigurationState>(ConfigurationState.DISPLAY);
-    const [editingLine, setEditingLine] = useState<BusLine | undefined>(undefined);
+    const [editLayer, setEditLayer] = useState<ILayer | undefined>(undefined);
 
 
-    const onEditLine = (busLine: BusLine) => {
-        setEditingLine(busLine);
+    const onEditLine = (layer: ILayer) => {
+        setEditLayer(layer);
         setState(ConfigurationState.EDITING);
     }
 
-    const onSaveLine = (busLine: BusLine) => {
+    const onSaveLine = (layer: ILayer) => {
 
         //
 
@@ -27,7 +27,7 @@ const SidePanelContainer = () => {
         case ConfigurationState.DISPLAY:
             return <Index onEditLine={onEditLine}/>
         case ConfigurationState.EDITING:
-            return <LineEditor busLine={editingLine!} onSaveLine={onSaveLine}/>
+            return <LineEditor layer={editLayer!} onSaveLine={onSaveLine}/>
     }
 }
 export default SidePanelContainer
