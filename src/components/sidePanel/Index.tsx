@@ -7,7 +7,9 @@ import {selectDisplay, toggleLayerVisibility} from "../../store/features/display
 import ILayer from "../../utils/interface/ILayer";
 import { v4 as uuidv4 } from 'uuid';
 
-const defaultLayer = {polylines: [], id: uuidv4(), name: "", displayed: true, markers:[]};
+const createLayer = () => {
+    return {polylines: [], id: uuidv4(), name: "", displayed: true, markers:[]};
+}
 
 
 const Index = ({onEditLine} : {onEditLine:(layer: ILayer) => void}) => {
@@ -28,7 +30,7 @@ const Index = ({onEditLine} : {onEditLine:(layer: ILayer) => void}) => {
                 })
             }
         </Stack>
-        <Button variant="primary" onClick={() => { onEditLine(defaultLayer); }}>
+        <Button variant="primary" onClick={() => { onEditLine(createLayer()); }}>
             Create new Line
         </Button>
     </>

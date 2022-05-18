@@ -37,7 +37,7 @@ export const displaySlice = createSlice({
       copy.layers.push(action.payload);
       state.value = copy;
     },
-    updateLayer: (state,  action: PayloadAction<ILayer>) => {
+    updateOrAddLayer: (state,  action: PayloadAction<ILayer>) => {
       const copy = {...state.value};
       let index = -1;
       for(let i = 0;  i < copy.layers.length; i++) {
@@ -49,15 +49,18 @@ export const displaySlice = createSlice({
       }
 
       if(index === -1)
-        return console.log("[displaySlice] updateLayer failed");
+        copy.layers = [...copy.layers, action.payload];
+      else {
+        copy.layers = [...copy.layers];
+        copy.layers[index] = action.payload;
+      }
 
-      copy.layers[index] = action.payload;
       state.value = copy;
     },
   },
 });
 
-export const { toggleLayerVisibility, addLayer, updateLayer } = displaySlice.actions;
+export const { toggleLayerVisibility, addLayer, updateOrAddLayer } = displaySlice.actions;
 
 export const selectDisplay = (state: RootState) => state.display.value;
 
