@@ -3,43 +3,29 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import BusLine from "../../utils/models/BusLine";
 import {FormEvent, useEffect, useState} from "react";
-import {LatLngExpression} from "leaflet";
-import MapClickEvent from "../../utils/observer/MapClickEvent";
-import Observer from "../../utils/observer/Observer";
-import MapManager from "../../utils/manager/MapManager";
+import {useAppSelector} from "../../store/hooks";
+import {selectPosition} from "../../store/features/position/positionSlice";
 
 const LineEditor = (
-    {busLine, onSaveLine, mapManager}:
-        {busLine: BusLine, onSaveLine: (busLine: BusLine) => void, mapManager: MapManager}) => {
+    {busLine, onSaveLine}:
+        {busLine: BusLine, onSaveLine: (busLine: BusLine) => void}) => {
 
-    const [editedBusLine, setEditedBusLine] = useState(busLine)
+    const [editedBusLine, setEditedBusLine] = useState(busLine);
+
+    const position = useAppSelector(selectPosition);
 
     const onSave = (event: FormEvent) => {
         event.preventDefault();
         onSaveLine(editedBusLine);
 
         // Clear
-        mapManager.posClick.detachObserver(mapClick)
-        mapManager.clearMarkers();
-    }
 
-    const mapClick = (pos: LatLngExpression | undefined) => {
-        if(pos === undefined)
-            return;
-        console.log("[LineEditor] " + pos);
-        let marker = {pos: pos, color: editedBusLine.color.substring(1)};
-
-        busLine.markers.push(marker);
-        mapManager.addMarker(marker)
     }
 
     useEffect(() => {
-        console.log("[LineEditor] useEffect");
-        for (let i = 0; i < busLine.markers.length; i++) {
-            mapManager.addMarker(busLine.markers[i]);
-        }
-        mapManager.posClick?.addObserver(mapClick);
-    }, [mapManager]);
+        console.log("[LineEditor] ");
+    }, [position]);
+
 
     return (
         <Form onSubmit={onSave}>

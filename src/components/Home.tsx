@@ -23,16 +23,14 @@ const center = {lat: 47.64795, lng: 6.85469};
 
 const Home = () => {
 
-    const mapManager = new MapManager();
-
     return (
         <Row style={rowStyle}>
             <Col style={colStyle} sm={8}>
-                <MapWrapper zoom={16} center={center} mapManager={mapManager}/>
+                <MapWrapper zoom={16} center={center}/>
             </Col>
             <Col style={colStyle} sm>
                 <Container>
-                    <SidePanelContainer mapManager={mapManager}/>
+                    <SidePanelContainer/>
                 </Container>
             </Col>
         </Row>
