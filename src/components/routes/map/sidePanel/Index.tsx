@@ -2,9 +2,9 @@ import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import {useAppSelector, useAppDispatch} from "../../store/hooks";
-import {selectDisplay, toggleLayerVisibility} from "../../store/features/display/displaySlice";
-import ILayer from "../../utils/interface/ILayer";
+import {useAppSelector, useAppDispatch} from "../../../../store/hooks";
+import {selectDisplay, toggleLayerVisibility} from "../../../../store/features/display/displaySlice";
+import ILayer from "../../../../utils/interface/ILayer";
 import { v4 as uuidv4 } from 'uuid';
 
 const createLayer = () => {

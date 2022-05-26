@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {MapContainer, TileLayer} from "react-leaflet";
 import {LatLngExpression} from "leaflet";
-import Markers from "../../utils/leaflet/Markers";
-import {IMarker} from "../../utils/interface/IMarker";
-import { useAppSelector, useAppDispatch } from '../../store/hooks';
-import { selectDisplay } from '../../store/features/display/displaySlice'
-import GetPosition from "../../utils/leaflet/GetPosition";
-import {setPosition} from "../../store/features/position/positionSlice";
-import Polylines from "../../utils/leaflet/Polylines";
-import IPolyline from "../../utils/interface/IPolyline";
+import Markers from "../../../../utils/leaflet/Markers";
+import {IMarker} from "../../../../utils/interface/IMarker";
+import { useAppSelector, useAppDispatch } from '../../../../store/hooks';
+import { selectDisplay } from '../../../../store/features/display/displaySlice'
+import GetPosition from "../../../../utils/leaflet/GetPosition";
+import {setPosition} from "../../../../store/features/position/positionSlice";
+import Polylines from "../../../../utils/leaflet/Polylines";
+import IPolyline from "../../../../utils/interface/IPolyline";
 
 
 const MapWrapper = (

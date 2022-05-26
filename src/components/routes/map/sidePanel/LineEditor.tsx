@@ -3,11 +3,11 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Stack from 'react-bootstrap/Stack';
 import {FormEvent, useEffect, useState} from "react";
-import {useAppDispatch, useAppSelector} from "../../store/hooks";
-import {selectPosition} from "../../store/features/position/positionSlice";
-import ILayer from "../../utils/interface/ILayer";
-import EditorState from "../../utils/interface/EditorState";
-import {updateOrAddLayer} from "../../store/features/display/displaySlice";
+import {useAppDispatch, useAppSelector} from "../../../../store/hooks";
+import {selectPosition} from "../../../../store/features/position/positionSlice";
+import ILayer from "../../../../utils/interface/ILayer";
+import EditorState from "../../../../utils/interface/EditorState";
+import {updateOrAddLayer} from "../../../../store/features/display/displaySlice";
 import {LatLng, LatLngExpression, LatLngLiteral} from "leaflet";
 
 const LineEditor = (

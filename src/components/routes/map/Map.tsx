@@ -2,7 +2,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import React from "react";
 import SidePanelContainer from "./sidePanel/SidePanelContainer";
-import MapWrapper from "./map/MapWrapper";
+import MapWrapper from "./map-wrapper/MapWrapper";
 import Container from 'react-bootstrap/Container';
 
 
@@ -20,7 +20,7 @@ const colStyle: React.CSSProperties = {
 // The map will be center on this position when started
 const center = {lat: 47.64795, lng: 6.85469};
 
-const Home = () => {
+const Map = () => {
 
     return (
         <Row style={rowStyle}>
@@ -36,4 +36,4 @@ const Home = () => {
     )
 }
 
-export default Home;
+export default Map;

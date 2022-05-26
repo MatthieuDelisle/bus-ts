@@ -1,8 +1,8 @@
 import React, {useState} from "react";
-import ConfigurationState from "../../utils/enums/ConfigurationState";
+import ConfigurationState from "../../../../utils/enums/ConfigurationState";
 import Index from "./Index";
 import LineEditor from "./LineEditor";
-import ILayer from "../../utils/interface/ILayer";
+import ILayer from "../../../../utils/interface/ILayer";
 
 
 const SidePanelContainer = () => {
