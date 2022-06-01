@@ -13,7 +13,6 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <React.StrictMode>
       <Provider store={store}>
           <Router>
               <Header/>
@@ -24,5 +23,4 @@ root.render(
               </Routes>
           </Router>
       </Provider>
-  </React.StrictMode>
 );

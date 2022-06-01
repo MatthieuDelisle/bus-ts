@@ -1,4 +1,4 @@
-import { Marker } from 'react-leaflet';
+import {Marker, Popup} from 'react-leaflet';
 import markerIcon from "./MarkerIcon";
 import {IMarker} from "../interface/IMarker";
 
@@ -10,8 +10,15 @@ function Markers({ markers }: {markers: IMarker[]}): JSX.Element {
             key={index}
             icon={markerIcon(marker.color)}
             position={marker.pos}
+            eventHandlers={{
+                click:(e) => {
+                    console.log(marker.name)
+                    console.log(e);
+                }}}
             draggable={false}>
-
+            <Popup>
+                {marker?.name}
+            </Popup>
         </Marker>
     })}</>
 }

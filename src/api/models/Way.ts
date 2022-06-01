@@ -7,6 +7,21 @@ interface APIQueryFeaturesWay {
     geometry: ({ lat: number, lon: number } | null)[];
 }
 
+export const isBusCompatible = (highway?: string) => {
+    switch (highway) {
+        case "motorway":
+        case "trunk":
+        case "primary":
+        case "secondary":
+        case "tertiary":
+        case "residential":
+        case "unclassified": // bridges
+            return true;
+        default:
+            return undefined;
+    }
+}
+
 class Way {
     id: string;
     tags: {[id: string]: string};

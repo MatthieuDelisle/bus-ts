@@ -6,6 +6,7 @@ import ILayer from "../../../../utils/interface/ILayer";
 
 
 const SidePanelContainer = () => {
+    console.log("SidePanelContainer");
 
     const [state, setState] = useState<ConfigurationState>(ConfigurationState.DISPLAY);
     const [editLayer, setEditLayer] = useState<ILayer | undefined>(undefined);
@@ -30,4 +31,4 @@ const SidePanelContainer = () => {
             return <LineEditor layer={editLayer!} onSaveLine={onSaveLine}/>
     }
 }
-export default SidePanelContainer
+export default React.memo(SidePanelContainer);
