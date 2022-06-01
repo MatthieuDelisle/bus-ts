@@ -11,7 +11,7 @@ const initialState: DisplayState = {
   value: {
     layers: [
       {
-        markers: [{pos: {lat: 47.64795, lng: 6.85469}, color: "d51717"}],
+        markers: [{pos: {lat: 47.64795, lng: 6.85469}, color: "d51717", id: -1}],
         name:"layer_default",
         displayed: true,
         polylines: [],

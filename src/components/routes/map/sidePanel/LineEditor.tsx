@@ -56,8 +56,21 @@ const LineEditor = (
                             if(way_ids1.length === 1)
                                 return;
 
+                            const marker: IMarker = {
+                                pos: node_dict[node_id1],
+                                color: color,
+                                id: node_id1,
+                                name: `id: ${node_id1}`,
+                                callback: (id) => {
+                                    setEditedLayer((prevState => {
+                                        return {...prevState, markers: [],polylines: []}
+                                    }))
+                                    setCurrentNode(id);
+                                }
+                            };
+
                             setEditedLayer((prevState => {
-                                return {...prevState, markers: [...prevState.markers, {pos: node_dict[node_id1], color: color, name: `id: ${node_id1}`}]}
+                                return {...prevState, markers: [...prevState.markers, marker]}
                             }))
                         })
                     }

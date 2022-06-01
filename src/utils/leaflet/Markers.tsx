@@ -14,6 +14,8 @@ function Markers({ markers }: {markers: IMarker[]}): JSX.Element {
                 click:(e) => {
                     console.log(marker.name)
                     console.log(e);
+                    if(marker.callback !== undefined)
+                        marker.callback(marker.id);
                 }}}
             draggable={false}>
             <Popup>
