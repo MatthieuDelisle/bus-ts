@@ -142,6 +142,7 @@ const LineEditor = (
                                 const copy = [...history];
                                 copy.splice(index, 1);
                                 setHistory(copy);
+                                setCurrentNode(history[history.length - 1].id)
                             }}>Remove</Button></div>
                         })}
                     </Stack>
