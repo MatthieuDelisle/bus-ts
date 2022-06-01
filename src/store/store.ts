@@ -9,6 +9,10 @@ export const store = configureStore({
     display: displayReducer,
     position: positionReducer,
   },
+  middleware: getDefaultMiddleware =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
 });
 
 export type AppDispatch = typeof store.dispatch;

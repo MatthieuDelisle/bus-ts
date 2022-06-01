@@ -3,12 +3,10 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Stack from 'react-bootstrap/Stack';
 import React, {FormEvent, useEffect, useState} from "react";
-import {useAppDispatch, useAppSelector} from "../../../../store/hooks";
-import {selectPosition} from "../../../../store/features/position/positionSlice";
+import {useAppDispatch} from "../../../../store/hooks";
 import ILayer from "../../../../utils/interface/ILayer";
-import EditorState from "../../../../utils/interface/EditorState";
 import {updateOrAddLayer} from "../../../../store/features/display/displaySlice";
-import {latLng, LatLng, LatLngExpression, LatLngLiteral} from "leaflet";
+import {LatLngLiteral} from "leaflet";
 import Api from "../../../../api/api";
 import IPolyline from "../../../../utils/interface/IPolyline";
 import {IMarker} from "../../../../utils/interface/IMarker";
@@ -21,6 +19,8 @@ const randomColor = () => {
 const LineEditor = (
     {layer, onSaveLine}:
         {layer: ILayer, onSaveLine: (layer: ILayer) => void}) => {
+
+    const lineColor = "#a40000";
 
     const dispatch = useAppDispatch();
 
@@ -35,21 +35,37 @@ const LineEditor = (
         // Clear
     }
 
-    const [currentNode, setCurrentNode] = useState<number>(484258490)
+    const [currentNode, setCurrentNode] = useState<number>(484258490);
 
+    const [history, setHistory] = useState<{pos: LatLngLiteral, id: number}[]>([]);
+
+    const reset = () => {
+        setEditedLayer((prevState => {
+            return {...prevState, markers: [],polylines: [{positions:history.map((value) => value.pos), color: lineColor, weight: 5}]}
+        }))
+    }
 
     useEffect(() => {
-        console.log("[currentNode] ");
+        setEditedLayer((prevState => {
+            return {...prevState, polylines: [...prevState.polylines, {positions:history.map((value) => value.pos), color: lineColor, weight: 5}]}
+        }))
+    }, [history])
+
+    useEffect(() => {
+        console.log("[currentNode]");
 
         Api.get_ways(currentNode, (way_ids => {
             console.log("get_ways callback");
+
 
             for (let i = 0; i < way_ids.length; i++) {
                 Api.get_ways_full(way_ids[i], ((node_dict, node_order) => {
                     console.log("get_ways_full callback");
 
                     const color = randomColor();
-                    const polyline: IPolyline = {positions: node_order.map((value => node_dict[value])), color: color};
+                    const polyline: IPolyline = {positions: node_order.map((value => node_dict[value])), color: color, weight: 3};
+
+
 
                     for (let j = 0; j < node_order.length; j++) {
                         Api.get_ways(node_order[j], (way_ids1, node_id1) => {
@@ -62,10 +78,13 @@ const LineEditor = (
                                 id: node_id1,
                                 name: `id: ${node_id1}`,
                                 callback: (id) => {
-                                    setEditedLayer((prevState => {
-                                        return {...prevState, markers: [],polylines: []}
-                                    }))
+                                    reset();
                                     setCurrentNode(id);
+                                    setHistory(prevState => {
+                                        return [...prevState,
+                                            {pos: {lat: node_dict[currentNode].lat, lng: node_dict[currentNode].lng},
+                                                id: currentNode}]
+                                    })
                                 }
                             };
 
@@ -118,10 +137,13 @@ const LineEditor = (
                 <Card.Body>Line edition</Card.Body>
                 <Card.Text>
                     <Stack gap={1}>
-                        {editedLayer.polylines.length === 0?<></>:(editedLayer.polylines[0].positions.map(((value: LatLngExpression, index: number) => {
-                            let latLng = (value as LatLngLiteral) //TODO: do something better than this cast
-                            return <div key={index}>{latLng.lat} - {latLng.lng}</div>
-                        })))}
+                        {history.map((his, index) => {
+                            return <div key={index}>{his.pos.lat} - {his.pos.lng} <Button onClick={event => {
+                                const copy = [...history];
+                                copy.splice(index, 1);
+                                setHistory(copy);
+                            }}>Remove</Button></div>
+                        })}
                     </Stack>
                 </Card.Text>
             </Card>
