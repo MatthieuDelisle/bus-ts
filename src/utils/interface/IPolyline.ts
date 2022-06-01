@@ -1,7 +1,7 @@
-import {LatLngExpression} from "leaflet";
+import {LatLngLiteral} from "leaflet";
 
 interface IPolyline {
-    positions: LatLngExpression[];
+    positions: LatLngLiteral[];
     color: string;
 }
 

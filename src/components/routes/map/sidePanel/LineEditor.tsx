@@ -2,13 +2,14 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Stack from 'react-bootstrap/Stack';
-import {FormEvent, useEffect, useState} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks";
 import {selectPosition} from "../../../../store/features/position/positionSlice";
 import ILayer from "../../../../utils/interface/ILayer";
 import EditorState from "../../../../utils/interface/EditorState";
 import {updateOrAddLayer} from "../../../../store/features/display/displaySlice";
-import {LatLng, LatLngExpression, LatLngLiteral} from "leaflet";
+import {latLng, LatLng, LatLngExpression, LatLngLiteral} from "leaflet";
+import Api from "../../../../api/api";
 
 const LineEditor = (
     {layer, onSaveLine}:
@@ -20,8 +21,6 @@ const LineEditor = (
 
     const [state, setState] = useState<EditorState>(EditorState.IDLE)
 
-    const [color, setColor] = useState("#cc14b7");
-
     const position = useAppSelector(selectPosition);
 
     const onSave = (event: FormEvent) => {
@@ -29,52 +28,21 @@ const LineEditor = (
 
         onSaveLine(editedLayer);
         // Clear
-
     }
 
-    const getStateName = () => {
-        switch (state) {
-            case EditorState.IDLE:
-                return "IDLE"
-            case EditorState.SELECT_STARTING_POINT:
-                return "SELECT_STARTING_POINT"
-            case EditorState.SELECT_PATH:
-                return "SELECT_PATH"
-        }
-    }
+    const [currentNode, setCurrentNode] = useState<string>("484258490")
 
-    //{lat: 47.64935888483071, lng: 6.853105774796373}
-    //{lat: 47.649893728326944, lng: 6.852548189142525}
 
     useEffect(() => {
-        console.log("[LineEditor] ");
-        console.log(position);
+        console.log("[currentNode] ");
+        console.log(currentNode);
 
-        switch (state) {
-            case EditorState.IDLE:
-                // Do nothing
-                break;
-            case EditorState.SELECT_STARTING_POINT:
-                setEditedLayer({...editedLayer, markers: [{pos: position, color: color}]});
-                break;
-            case EditorState.SELECT_PATH:
-                let polylines = [...editedLayer.polylines];
-                if (polylines.length === 0)
-                    polylines = [{positions: [position], color: color}];
-                else {
-                    let busPolyLine = {...polylines[0]};
-                    busPolyLine.positions = [...busPolyLine.positions, position];
-                    polylines[0] = busPolyLine;
-                }
-                setEditedLayer({...editedLayer, polylines: polylines})
-                break;
-        }
-    }, [position]);
+    }, [currentNode]);
 
     // update the store
     useEffect(() => {
         dispatch(updateOrAddLayer(editedLayer));
-    }, [editedLayer]);
+    }, [dispatch, editedLayer]);
 
 
     return (
@@ -109,21 +77,6 @@ const LineEditor = (
                             return <div key={index}>{latLng.lat} - {latLng.lng}</div>
                         })))}
                     </Stack>
-                    <Button onClick={() => {
-
-                        switch (state) {
-                            case EditorState.IDLE:
-                                setState(EditorState.SELECT_STARTING_POINT);
-                                break;
-                            case EditorState.SELECT_STARTING_POINT:
-                                setState(EditorState.SELECT_PATH);
-                                break;
-                            case EditorState.SELECT_PATH:
-                                setState(EditorState.IDLE);
-                                break;
-                        }
-
-                    }}>{getStateName()}</Button>
                 </Card.Text>
             </Card>
 
@@ -134,4 +87,4 @@ const LineEditor = (
     )
 }
 
-export default LineEditor;
+export default React.memo(LineEditor);
