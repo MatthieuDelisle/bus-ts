@@ -4,8 +4,12 @@ import Way, {isBusCompatible} from "./models/Way";
 
 type node_dict = {[id: number]: LatLngLiteral};
 
-
+/**
+ * This class defines a simple api for fetching and receiving data about OpenStreet map
+ */
 class Api {
+
+    // From a position get all the ways, and nodes nearby
     static query_features = (latLng: LatLng, callback: (d: Way[]) => void)  => {
         console.log("query_features");
         fetch(`http://127.0.0.1:5000/explore?lat=${latLng.lat}&lon=${latLng.lng}`)
@@ -25,6 +29,7 @@ class Api {
             });
     }
 
+    // Get all the ways (roads) of a node
     static get_ways = (node_id: number, callback: (way_ids: string[], node_id: number) => void) => {
         fetch(`http://127.0.0.1:5000/ways?node_id=${node_id}`)
             .then(response => response.json())
@@ -36,6 +41,7 @@ class Api {
             });
     }
 
+    // Get all the nodes and the properties of a way (road)
     static get_ways_full = (way_id: string, callback: (node_dict: node_dict, node_order: number[]) => void) => {
         fetch(`http://127.0.0.1:5000/nodes?way_id=${way_id}`)
             .then(response => response.json())

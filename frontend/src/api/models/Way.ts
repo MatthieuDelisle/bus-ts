@@ -7,6 +7,7 @@ interface APIQueryFeaturesWay {
     geometry: ({ lat: number, lon: number } | null)[];
 }
 
+// According
 export const isBusCompatible = (highway?: string) => {
     switch (highway) {
         case "motorway":
@@ -22,6 +23,7 @@ export const isBusCompatible = (highway?: string) => {
     }
 }
 
+// A way is a road
 class Way {
     id: string;
     tags: {[id: string]: string};
@@ -34,32 +36,22 @@ class Way {
     }
 
     static from_request_query_features = (obj: APIQueryFeaturesWay) => {
+        // If it is not a way
         if(obj.type !== 'way')
             return undefined;
 
-        // https://wiki.openstreetmap.org/wiki/Key:highway
-        switch (obj.tags?.['highway']) {
-            case undefined:
-                return undefined;
-            case "motorway":
-            case "trunk":
-            case "primary":
-            case "secondary":
-            case "tertiary":
-            case "residential":
-            case "unclassified": // bridges
-                break;
-            default:
-                return undefined;
-        }
+        // If the way is useless
+        if(!isBusCompatible(obj.tags?.['highway']))
+            return undefined;
 
+        // We store the geometry of the way
         const geometries: LatLngLiteral[] = [];
         for (let i = 0; i < obj.geometry.length; i++) {
             if(obj.geometry[i] != null)
                 geometries.push({lat: obj.geometry[i]!.lat, lng: obj.geometry[i]!.lon });
         }
 
-        return new Way(obj.id, obj.tags, geometries);
+        return new Way(obj.id, obj.tags!, geometries);
     }
 }
 

@@ -9,6 +9,7 @@ interface NavItems {
 
 const Header = () => {
 
+    // All the navItems and the url they are linked to.
     const navItems: NavItems[] = [
         {name: "Map", url: "/map"},
         {name: "Stats", url: "/stats"},

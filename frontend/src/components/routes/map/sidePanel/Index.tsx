@@ -11,7 +11,7 @@ const createLayer = () => {
     return {polylines: [], id: uuidv4(), name: "", displayed: true, markers:[]};
 }
 
-
+// This component display the lines and allow them to be hiden or not
 const Index = ({onEditLine} : {onEditLine:(layer: ILayer) => void}) => {
 
     const display = useAppSelector(selectDisplay);
@@ -21,12 +21,14 @@ const Index = ({onEditLine} : {onEditLine:(layer: ILayer) => void}) => {
         <Stack gap={3}>
             {
                 display.layers.map((layer: ILayer, i: number) => {
-                    return <Row key={i}>
-                        <Col sm={8}>{layer.name}</Col>
-                        <Col sm>
-                            <Button className={'m-2'} variant="primary" onClick={() => dispatch(toggleLayerVisibility(i))}>Show/Hide</Button>
-                        </Col>
-                    </Row>
+                    return (
+                        <Row key={i}>
+                            <Col sm={8}>{layer.name}</Col>
+                            <Col sm>
+                                <Button className={'m-2'} variant="primary" onClick={() => dispatch(toggleLayerVisibility(i))}>Show/Hide</Button>
+                            </Col>
+                        </Row>
+                    )
                 })
             }
         </Stack>

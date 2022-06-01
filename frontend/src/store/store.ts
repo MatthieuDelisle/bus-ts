@@ -1,17 +1,17 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from './features/counter/counterSlice';
 import displayReducer from './features/display/displaySlice';
 import positionReducer from './features/position/positionSlice';
 
+// The store is an element available everywhere
+// see more https://react-redux.js.org/
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
     display: displayReducer,
     position: positionReducer,
   },
   middleware: getDefaultMiddleware =>
       getDefaultMiddleware({
-        serializableCheck: false,
+        serializableCheck: false, // We know what we are doing
       }),
 });
 

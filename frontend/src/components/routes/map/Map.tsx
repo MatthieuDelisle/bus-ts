@@ -20,6 +20,10 @@ const colStyle: React.CSSProperties = {
 // The map will be center on this position when started
 const center = {lat: 47.64795, lng: 6.85469};
 
+/**
+ * The Map component is simply a page, separate in two section
+ * on the left, the map, on the right a panel
+ */
 const Map = () => {
 
     return (

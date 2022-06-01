@@ -5,6 +5,7 @@ import LineEditor from "./LineEditor";
 import ILayer from "../../../../utils/interface/ILayer";
 
 
+// This component simply switch between the editor and the lines display
 const SidePanelContainer = () => {
     console.log("SidePanelContainer");
 
