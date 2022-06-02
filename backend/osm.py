@@ -29,13 +29,9 @@ def query_features(lat, long, dist = 10.0):
 
 def get_ways(node_id: str):
   response = requests.request("GET", f'https://www.openstreetmap.org/api/0.6/node/{node_id}/ways.json',  headers=headers)
-  print(response.text)
   return response.text
 
 
 def get_nodes(way_id: str):
   response = requests.request("GET", f'https://www.openstreetmap.org/api/0.6/way/{way_id}/full.json', headers=headers)
   return response.text
-
-
-

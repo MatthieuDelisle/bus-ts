@@ -41,14 +41,26 @@ def explorer_node():
     ways = json.loads(get_ways(node_id))['elements']
     output = {}
     for way in ways:
-        if way['tags']['highway'] not in allowed:
+
+        if 'tags' not in way:
+            continue
+
+        if 'highway' not in way['tags'] or way['tags']['highway'] not in allowed:
             continue
 
         nodes = [elem for elem in json.loads(get_nodes(way['id']))['elements'] if elem['type'] == "node"]
+        geometry = {}
+        for node in nodes:
+            geometry[node['id']] = {
+                'lat': node['lat'],
+                'lon': node['lon'],
+                'index': way['nodes'].index(node['id']),
+            }
 
-        output[way['id']] = {'name': way['tags']['name'], 'geometry': nodes}
-
-
+        output[way['id']] = {
+            'name': (way['tags']['name'] if 'name' in way['tags'] else "unknown"),
+            'geometry': geometry
+        }
 
     return output
 
