@@ -23,9 +23,12 @@ const Index = ({onEditLine} : {onEditLine:(layer: ILayer) => void}) => {
                 display.layers.map((layer: ILayer, i: number) => {
                     return (
                         <Row key={i}>
-                            <Col sm={8}>{layer.name}</Col>
-                            <Col sm>
+                            <Col >{layer.name}</Col>
+                            <Col>
                                 <Button className={'m-2'} variant="primary" onClick={() => dispatch(toggleLayerVisibility(i))}>Show/Hide</Button>
+                            </Col>
+                            <Col>
+                                <Button className={'m-2'} variant="secondary" onClick={() => onEditLine(layer)}>Edit</Button>
                             </Col>
                         </Row>
                     )
