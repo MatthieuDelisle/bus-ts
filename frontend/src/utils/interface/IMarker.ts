@@ -5,6 +5,6 @@ export interface IMarker {
     pos: LatLngExpression,
     color: string,
     id: number,
-    name?: string,
+    popupText?: string;
     callback?: (id: number) => void;
 }

@@ -1,6 +1,7 @@
 from flask import Flask, request
 from osm import *
 from flask_cors import CORS
+import json
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
@@ -31,8 +32,25 @@ def hello_world():  # put application's code here
     return 'Hello World!'
 
 
+allowed = ["motorway", "trunk", "primary", "secondary", "tertiary", "residential", "unclassified"]
 
 
+@app.route('/explorer_node', methods=['GET'])
+def explorer_node():
+    node_id = request.args.get("node_id", default="0", type=str)
+    ways = json.loads(get_ways(node_id))['elements']
+    output = {}
+    for way in ways:
+        if way['tags']['highway'] not in allowed:
+            continue
+
+        nodes = [elem for elem in json.loads(get_nodes(way['id']))['elements'] if elem['type'] == "node"]
+
+        output[way['id']] = {'name': way['tags']['name'], 'geometry': nodes}
+
+
+
+    return output
 
 
 if __name__ == '__main__':

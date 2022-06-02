@@ -92,7 +92,6 @@ const LineEditor = (
                                 pos: node_dict[node_id1],
                                 color: color,
                                 id: node_id1,
-                                name: `id: ${node_id1}`,
                                 callback: (id) => {
                                     // This callback is VERY BAD, it will be put the store... Not good, but it works
                                     // if we have more time we should find another solution.

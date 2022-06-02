@@ -13,15 +13,18 @@ const Markers = ({ markers }: {markers: IMarker[]}): JSX.Element => {
                     position={marker.pos}
                     eventHandlers={{
                         click:(e) => {
-                            console.log(marker.name)
                             console.log(e);
                             if(marker.callback !== undefined)
                                 marker.callback(marker.id);
                         }}}
                     draggable={false}>
-                    <Popup>
-                        {marker?.name}
-                    </Popup>
+                    {
+                        marker.popupText?(
+                            <Popup>
+                                {marker.popupText}
+                            </Popup>
+                        ):<></>
+                    }
                 </Marker>
             })}
         </>

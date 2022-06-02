@@ -3,6 +3,7 @@ import ConfigurationState from "../../../../utils/enums/ConfigurationState";
 import Index from "./Index";
 import LineEditor from "./LineEditor";
 import ILayer from "../../../../utils/interface/ILayer";
+import {BetterLineEditor} from "./BetterLineEditor";
 
 
 // This component simply switch between the editor and the lines display
@@ -29,7 +30,7 @@ const SidePanelContainer = () => {
         case ConfigurationState.DISPLAY:
             return <Index onEditLine={onEditLine}/>
         case ConfigurationState.EDITING:
-            return <LineEditor layer={editLayer!} onSaveLine={onSaveLine}/>
+            return <BetterLineEditor layer={editLayer!} onSaveLine={onSaveLine}/>
     }
 }
 export default React.memo(SidePanelContainer);

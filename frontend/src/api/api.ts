@@ -4,6 +4,11 @@ import Way, {isBusCompatible} from "./models/Way";
 
 type node_dict = {[id: number]: LatLngLiteral};
 
+
+type node = {lat: number, lon: number, ways: number, index: number}
+type geometry = {[id: string]: node}
+type INodeExplorer = {[id: string]: {geometry: geometry, name: string}}
+
 /**
  * This class defines a simple api for fetching and receiving data about OpenStreet map
  */
@@ -60,6 +65,17 @@ class Api {
                 }
 
                 callback(node_dict, node_order);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    static explorer_node = (node_id: string, callback: (content: INodeExplorer) => void) => {
+        fetch(`http://127.0.0.1:5000/explorer_node?node_id=${node_id}`)
+            .then(response => response.json())
+            .then(response => {
+                callback(response);
             })
             .catch(error => {
                 console.log(error);
