@@ -6,7 +6,7 @@ type node_dict = {[id: number]: LatLngLiteral};
 
 
 type node = {lat: number, lon: number, ways: number, index: number}
-type geometry = {[id: string]: node}
+export type geometry = {[id: string]: node}
 type INodeExplorer = {[id: string]: {geometry: geometry, name: string}}
 
 /**

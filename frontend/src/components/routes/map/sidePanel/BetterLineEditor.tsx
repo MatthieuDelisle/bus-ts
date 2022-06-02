@@ -1,11 +1,12 @@
 import ILayer from "../../../../utils/interface/ILayer";
 import {useEffect, useState} from "react";
-import Api from "../../../../api/api";
+import Api, {geometry} from "../../../../api/api";
 import {Spinner} from "react-bootstrap";
 import IPolyline from "../../../../utils/interface/IPolyline";
 import {updateOrAddLayer} from "../../../../store/features/display/displaySlice";
 import {useAppDispatch} from "../../../../store/hooks";
 import {IMarker} from "../../../../utils/interface/IMarker";
+import {LatLngLiteral} from "leaflet";
 
 type props = {
     layer: ILayer,
@@ -16,10 +17,31 @@ const randomColor = () => {
     return '#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6);
 }
 
+const createPath = (way: geometry, start: string, end: string) => {
+    const sortedPositions = Object
+        .entries(way)
+        .sort((a, b) => a[1].index-b[1].index)
+        .map((pair) => {
+            console.log(pair[0] + " : " + pair[1].lat + "," + pair[1].lon)
+            return {lat: pair[1].lat, lng: pair[1].lon}
+        })
+
+    const startIndex =  Math.min(way[start].index, way[end].index);
+    const endIndex = Math.max(way[start].index, way[end].index);
+
+    sortedPositions.splice(endIndex + 1);
+    sortedPositions.splice(0, startIndex);
+
+    if(way[end].index < way[start].index)
+        return sortedPositions.reverse();
+    return sortedPositions;
+}
+
 export const BetterLineEditor = ({layer, onSaveLine}:props) => {
     const [editedLayer, setEditedLayer] = useState<ILayer>(layer);
     const [state, setState] = useState<'idle' | 'loading' | 'error'>('loading');
     const [currentNode, setCurrentNode] = useState<string>("484258490");
+    const [historyPah, setHistoryPath] = useState<LatLngLiteral[]>([]);
     const dispatch = useAppDispatch();
     //const [ways, setWays] = useState()
 
@@ -42,13 +64,16 @@ export const BetterLineEditor = ({layer, onSaveLine}:props) => {
 
                                 if(node[0] === currentNode)
                                     markers.push({pos: pos, color: "#ff0000", id: Number(node[0]), popupText: "You are currently here"})
-                                else if(node[1].ways > 1)
+                                else
                                     markers.push(
                                         {
                                             pos: pos,
                                             color: color,
                                             id: Number(node[0]),
                                             callback: () => {
+                                                setHistoryPath(prevState => {
+                                                    return [...prevState, ...createPath(way[1].geometry, currentNode, node[0])]
+                                                })
                                                 setState('loading');
                                                 setCurrentNode(node[0]);
                                             }
@@ -62,17 +87,15 @@ export const BetterLineEditor = ({layer, onSaveLine}:props) => {
                     }
                 });
 
-            console.log(markers);
 
             setEditedLayer((prevState => {
-                return {...prevState, markers: markers, polylines: polylines}
+                return {...prevState, markers: markers, polylines: [...polylines, {positions: historyPah, color: '#ff0000', weight: 10}]}
             }))
         });
     }, [currentNode]);
 
     // update the store
     useEffect(() => {
-        console.log(editedLayer);
         dispatch(updateOrAddLayer(editedLayer));
     }, [dispatch, editedLayer]);
 
